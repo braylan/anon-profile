@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анкета Анона</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --orange: #e87722;
+    --orange-light: #f09040;
+    --orange-dark: #c46010;
+    --orange-bg: #fff5ee;
+    --orange-fill: #e87722;
+    --gray: #ccc;
+    --gray-light: #f5f5f5;
+    --text: #222;
+    --border: #ddd;
+  }
+
+    { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fafafa;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 15px;
+  }
+  .header {
+    text-align: center;
+    padding: 12px 0;
+    border-bottom: 3px solid var(--orange);
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .header::before, .header::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 3px;
+    background: var(--orange);
+  }
+  .header::before { left: 5%; }
+  .header::after { right: 5%; }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text);
+  }
+  .section { margin-bottom: 15px; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .section-title-right { text-align: right; }
+  .vital-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+  .vital-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .vital-single-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.vital-block {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+.vital-block .vital-label {
+  min-width: auto;
+  margin-right: 4px;
+}
+.worldview-block {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.worldview-grid {
+  display: grid;
+  grid-template-columns: 20px repeat(3, 24px);
+  gap: 2px;
+  align-items: center;
+}
+.worldview-axis {
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  color: #222;
+}
+.worldview-axis:first-child {
+  text-align: right;
+}
+.opt-patch[data-align] .opt-patch-arrow {
+  width: 24px;
+  height: 16px;
+}
+  .vital-label { font-weight: 700; min-width: 80px; font-size: 14px; }
+  .vital-label-wide { font-weight: 700; min-width: 120px; font-size: 14px; }
+  .opt {
+    display: inline-block;
+    padding: 2px 10px;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    background: #fff;
+    font-size: 12px;
+  }
+  .opt:hover { border-color: var(--orange); background: var(--orange-bg); }
+
+  .opt.filled {
+    background: var(--orange-fill);
+    color: #fff;
+    border-color: var(--orange-dark);
+  }
+.opt-patch {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+}
+.opt-patch-arrow {
+  width: 22px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.opt-patch-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.opt-patch-arrow svg polygon {
+  fill: #ffffff;
+  stroke: #ccc;
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.opt-patch:hover .opt-patch-arrow svg polygon {
+  fill: var(--orange-bg);
+  stroke: var(--orange-light);
+}
+.opt-patch.filled .opt-patch-arrow svg polygon {
+  fill: var(--orange-fill);
+  stroke: var(--orange-dark);
+}
+.opt-patch span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.15s;
+  pointer-events: none;
+}
+.opt-patch.filled span {
+  color: var(--orange-dark);
+}
+
+.scale-bar {
+  display: flex;
+  width: 100%;
+  gap: 0;
+  align-items: flex-start;
+}
+.scale-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+.scale-shape {
+  display: block;
+  width: 100%;
+  height: 22px;
+  overflow: visible;
+}
+.scale-shape polygon {
+  fill: #ffffff;
+  stroke: #ccc;
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.scale-item:hover .scale-shape polygon {
+  fill: var(--orange-bg);
+  stroke: var(--orange-light);
+}
+.scale-item.filled .scale-shape polygon {
+  fill: var(--orange-fill);
+  stroke: var(--orange-dark);
+}
+.scale-num {
+  font-size: 9px;
+  color: #999;
+  margin-top: 2px;
+  pointer-events: none;
+  line-height: 1;
+  font-weight: 600;
+}
+.scale-num.hidden {
+  visibility: hidden;
+}
+  .three-col-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(320px, 1.4fr) minmax(240px, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .param-group-title {
+    background: var(--orange);
+    color: #fff;
+    padding: 3px 8px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 3px 3px 0 0;
+    margin-top: 8px;
+  }
+.param-group-title:first-child { margin-top: 0; }
+.param-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  padding: 2px 4px;
+  border: 1px solid var(--border);
+  border-top: none;
+  gap: 6px;
+  min-height: 18px;
+}
+.param-row:last-child { border-radius: 0 0 3px 3px; }
+
+.param-name {
+  font-size: 10px;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+  padding: 2px 0;
+}
+
+.param-bar {
+  display: flex;
+  gap: 1px;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.param-arrow {
+  width: 20px;
+  height: 16px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.param-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.param-arrow svg polygon {
+  fill: #ffffff;
+  stroke: #ccc;
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.param-arrow:hover svg polygon {
+  fill: var(--orange-bg);
+  stroke: var(--orange-light);
+}
+.param-arrow.filled svg polygon {
+  fill: var(--orange-fill);
+  stroke: var(--orange-dark);
+}
+
+.param-cell:hover { border-color: var(--orange); }
+.param-cell.filled {
+  background: var(--orange-fill);
+  border-color: var(--orange-dark);
+}
+  .body-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 10px 0;
+    gap: 10px;
+  }
+  .body-figure {
+    text-align: center;
+    position: relative;
+  }
+  .body-figure svg {
+    width: 100px;
+    height: 180px;
+    display: block;
+  }
+  .body-figure canvas {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 180px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+  .body-label {
+    font-size: 10px;
+    color: #666;
+    margin-top: 4px;
+  }
+  .canvas-controls {
+    background: #f0f0f0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+  }
+  .canvas-controls label {
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .canvas-controls input[type="color"] {
+    width: 28px;
+    height: 24px;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .canvas-controls input[type="range"] {
+    width: 70px;
+  }
+  .canvas-btn {
+    padding: 3px 8px;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .canvas-btn:hover { border-color: var(--orange); background: var(--orange-bg); }
+  .canvas-btn.active {
+    background: var(--orange-fill);
+    color: #fff;
+    border-color: var(--orange-dark);
+  }
+  .template-btns {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .template-btn {
+    padding: 3px 8px;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 10px;
+    transition: all 0.15s;
+  }
+  .template-btn:hover { border-color: var(--orange); background: var(--orange-bg); }
+  .template-btn.active {
+    background: var(--orange-fill);
+    color: #fff;
+    border-color: var(--orange-dark);
+  }
+  .body-type-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  /* === КОНТАКТНЫЕ ДАННЫЕ — ЦЕНТРИРОВАНИЕ === */
+  .contact-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    padding: 0 10px;
+  }
+  .contact-label {
+    font-weight: 700;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .contact-input {
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 12px;
+    width: 130px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.15s, width 0.2s;
+  }
+  .contact-input:focus {
+    border-color: var(--orange);
+  }
+  /* Инпуты в vital-grid (страна, город) */
+  .vital-row .contact-input {
+    width: 110px;
+    text-align: center;
+  }
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px 8px;
+}
+.achievement-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  padding: 1px 0;
+}
+.achievement-arrow {
+  width: 22px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.achievement-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.achievement-arrow svg polygon {
+  fill: #ffffff;
+  stroke: #ccc;
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.achievement-item:hover .achievement-arrow svg polygon {
+  fill: var(--orange-bg);
+  stroke: var(--orange-light);
+}
+.achievement-item.filled .achievement-arrow svg polygon {
+  fill: var(--orange-fill);
+  stroke: var(--orange-dark);
+}
+.achievement-item span {
+  font-size: 10px;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.15s;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.achievement-item.filled span {
+  color: var(--orange-dark);
+}
+.achievement-item.filled span {
+  color: var(--orange-dark);
+}
+.perks-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+.perk-add-row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.perk-add-input {
+  flex: 1;
+  border: 1px solid var(--gray);
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  outline: none;
+  max-width: 200px;
+}
+.perk-add-input:focus {
+  border-color: var(--orange);
+}
+.perk-add-btn {
+  padding: 3px 10px;
+  border: 1px solid var(--gray);
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.perk-add-btn:hover {
+  border-color: var(--orange);
+  background: var(--orange-bg);
+}
+.perk-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+}
+.perk-arrow {
+  width: 24px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.perk-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.perk-arrow svg polygon {
+  fill: #ffffff;
+  stroke: #ccc;
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.perk-item:hover .perk-arrow svg polygon {
+  fill: var(--orange-bg);
+  stroke: var(--orange-light);
+}
+.perk-item.filled .perk-arrow svg polygon {
+  fill: var(--orange-fill);
+  stroke: var(--orange-dark);
+}
+.perk-item span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.15s;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.perk-item.filled span {
+  color: var(--orange-dark);
+}
+  .tastes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+.taste-block {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.taste-header {
+  background: var(--orange);
+  color: #fff;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.taste-textarea {
+  width: 100%;
+  min-height: 60px;
+  border: none;
+  padding: 8px;
+  font-size: 12px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  overflow-y: hidden;
+  line-height: 1.5;
+  transition: background 0.15s;
+  box-sizing: border-box;
+}
+.taste-textarea:focus { background: var(--orange-bg); }
+
+.worldview-container {
+  grid-row: span 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+.worldview-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(3, 28px);
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+.worldview-axis {
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  color: #222;
+}
+.worldview-axis:first-child {
+  text-align: right;
+  padding-right: 4px;
+}
+/* Цвета выбранных патчей мировоззрения */
+.opt-patch[data-align="lg"].filled .opt-patch-arrow svg polygon { fill: #7eb8da; stroke: #5a9ec4; }
+.opt-patch[data-align="ng"].filled .opt-patch-arrow svg polygon { fill: #a8d8a8; stroke: #7ec47e; }
+.opt-patch[data-align="cg"].filled .opt-patch-arrow svg polygon { fill: #7eda7e; stroke: #5ac45a; }
+.opt-patch[data-align="ln"].filled .opt-patch-arrow svg polygon { fill: #b0c4da; stroke: #8aa4c4; }
+.opt-patch[data-align="tn"].filled .opt-patch-arrow svg polygon { fill: #dadada; stroke: #c4c4c4; }
+.opt-patch[data-align="cn"].filled .opt-patch-arrow svg polygon { fill: #daa87e; stroke: #c4885a; }
+.opt-patch[data-align="le"].filled .opt-patch-arrow svg polygon { fill: #b07eda; stroke: #965ac4; }
+.opt-patch[data-align="ne"].filled .opt-patch-arrow svg polygon { fill: #da7eda; stroke: #c45ac4; }
+.opt-patch[data-align="ce"].filled .opt-patch-arrow svg polygon { fill: var(--orange-fill); stroke: var(--orange-dark); }
+
+
+  .temp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .temp-cell {
+    padding: 3px 8px;
+    border: 1px solid var(--gray);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 11px;
+    background: #fff;
+    text-align: center;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .temp-cell:hover { border-color: var(--orange); background: var(--orange-bg); }
+  .temp-cell.filled {
+    background: var(--orange-fill);
+    color: #fff;
+    border-color: var(--orange-dark);
+  }
+.additional-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.add-field-btn {
+  padding: 4px 10px;
+  border: 1px dashed var(--gray);
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.15s;
+  text-align: center;
+}
+.add-field-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--orange-bg);
+}
+.add-text-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.add-text-field input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 11px;
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+.add-text-field input:focus {
+  border-color: var(--orange);
+}
+.add-text-field .remove-field {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--gray);
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #999;
+  transition: all 0.15s;
+}
+.add-text-field .remove-field:hover {
+  background: #f44;
+  color: #fff;
+  border-color: #c33;
+}
+  .add-slot:hover { border-color: var(--orange); }
+  .add-slot.filled {
+    background: var(--orange-fill);
+    border-color: var(--orange-dark);
+  }
+  @media (max-width: 900px) {
+    .three-col-layout { grid-template-columns: 1fr; }
+    .tastes-grid { grid-template-columns: repeat(2, 1fr); }
+    .perks-grid { grid-template-columns: repeat(4, 1fr); }
+    .achievements-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .tastes-grid { grid-template-columns: 1fr; }
+    .perks-grid { grid-template-columns: repeat(3, 1fr); }
+    .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+    .vital-grid { grid-template-columns: 1fr; }
+  }
+  .save-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--orange);
+    padding: 8px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+  }
+  .save-btn {
+    padding: 6px 20px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .save-btn:hover { background: #fff; color: var(--orange); }
+  .save-btn:disabled { opacity: 0.6; cursor: wait; }
+  body { padding-bottom: 50px; }
+
+
+</style>
+</head>
+<body>
+
+
+
+<div class="container" id="anketa-container">
+
+  <div class="header">
+    <h1>АНКЕТА АНОНА</h1>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Витальная статистика</div>
+    <div class="vital-grid">
+<div class="vital-row">
+  <span class="vital-label">Пол:</span>
+  <div class="opt-patch" data-group="gender" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>М</span>
+  </div>
+  <div class="opt-patch" data-group="gender" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Ж</span>
+  </div>
+</div>
+
+<div class="vital-row">
+  <span class="vital-label">Пара:</span>
+  <div class="opt-patch" data-group="partner" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Нет</span>
+  </div>
+  <div class="opt-patch" data-group="partner" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Есть</span>
+  </div>
+</div>
+
+  <div class="vital-row" style="grid-column: 1 / -1;">
+    <span class="vital-label-wide">Возраст:</span>
+    <div class="scale-bar" id="age-scale"></div>
+  </div>
+
+  <div class="vital-row" style="grid-column: 1 / -1;">
+    <span class="vital-label-wide">Рост:</span>
+    <div class="scale-bar" id="height-scale"></div>
+  </div>
+
+  <div class="vital-row" style="grid-column: 1 / -1;">
+    <span class="vital-label-wide">Вес:</span>
+    <div class="scale-bar" id="weight-scale"></div>
+  </div>
+
+<div class="vital-row" style="grid-column: 1 / -1;">
+  <div class="vital-single-row">
+    <div class="vital-block">
+      <span class="vital-label">Ориентация:</span>
+      <div class="opt-patch" data-group="orient" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>Иное</span>
+      </div>
+      <div class="opt-patch" data-group="orient" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>Гетеро</span>
+      </div>
+      <div class="opt-patch" data-group="orient" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>Би</span>
+      </div>
+      <div class="opt-patch" data-group="orient" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>Гомо</span>
+      </div>
+    </div>
+
+    <div class="vital-block">
+      <span class="vital-label">Страна:</span>
+      <div class="opt-patch" data-group="country" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>РФ</span>
+      </div>
+      <div class="opt-patch" data-group="country" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>Другая</span>
+      </div>
+      <input type="text" class="contact-input auto-width-input" placeholder="указать..." style="width:100px;">
+    </div>
+
+    <div class="vital-block">
+      <span class="vital-label">Город:</span>
+      <div class="opt-patch" data-group="city" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>ДС</span>
+      </div>
+      <div class="opt-patch" data-group="city" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>ДС2</span>
+      </div>
+      <div class="opt-patch" data-group="city" onclick="toggleOptPatch(this)">
+        <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        <span>ДС3</span>
+      </div>
+      <input type="text" class="contact-input auto-width-input" placeholder="указать..." style="width:100px;">
+    </div>
+
+<div class="vital-block">
+  <span class="vital-label">Темперамент:</span>
+  <div class="opt-patch" data-group="temp" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Холерик</span>
+  </div>
+  <div class="opt-patch" data-group="temp" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Флегматик</span>
+  </div>
+  <div class="opt-patch" data-group="temp" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Сангвиник</span>
+  </div>
+  <div class="opt-patch" data-group="temp" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Меланхолик</span>
+  </div>
+</div>
+
+    <div class="vital-block worldview-block">
+      <span class="vital-label">Мировоззрение:</span>
+      <div class="worldview-grid">
+        <div></div>
+        <div class="worldview-axis">L</div>
+        <div class="worldview-axis">N</div>
+        <div class="worldview-axis">C</div>
+        
+        <div class="worldview-axis">G</div>
+        <div class="opt-patch" data-align="lg" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="ng" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="cg" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        
+        <div class="worldview-axis">N</div>
+        <div class="opt-patch" data-align="ln" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="tn" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="cn" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        
+        <div class="worldview-axis">E</div>
+        <div class="opt-patch" data-align="le" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="ne" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+        <div class="opt-patch" data-align="ce" onclick="selectWorldview(this)">
+          <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+  <div class="section">
+    <div class="section-title section-title-right">Основные черты</div>
+    <div class="three-col-layout">
+
+        <div>
+    <div class="param-group-title">Основные параметры</div>
+    <div id="params-basic"></div>
+
+    <div class="param-group-title">Сексуальная сфера</div>
+    <div id="params-sex"></div>
+
+    <div class="param-group-title">Пристрастия</div>
+    <div id="params-addict"></div>
+
+    <div class="param-group-title">Социализация</div>
+    <div id="params-social"></div>
+  </div>
+
+  <div>
+    <div class="template-btns">
+      <span style="font-size:10px;font-weight:700;margin-right:4px;">Шаблон:</span>
+      <button class="template-btn active" data-template="male" onclick="setTemplate('male', this)">Мужской</button>
+      <button class="template-btn" data-template="female" onclick="setTemplate('female', this)">Женский</button>
+    </div>
+
+    <div class="body-section">
+      <div class="body-figure" data-figure="best">
+        <svg class="body-svg" viewBox="0 0 120 220"></svg>
+        <canvas class="body-canvas" width="200" height="360"></canvas>
+        <div class="body-label">Лучшая форма</div>
+      </div>
+      <div class="body-figure" data-figure="current">
+        <svg class="body-svg" viewBox="0 0 120 220"></svg>
+        <canvas class="body-canvas" width="200" height="360"></canvas>
+        <div class="body-label">Сейчас</div>
+      </div>
+      <div class="body-figure" data-figure="worst">
+        <svg class="body-svg" viewBox="0 0 120 220"></svg>
+        <canvas class="body-canvas" width="200" height="360"></canvas>
+        <div class="body-label">Худшая форма</div>
+      </div>
+    </div>
+
+    <div class="canvas-controls">
+      <label>Цвет:</label>
+      <input type="color" id="brush-color" value="#222222">
+      <label>Размер:</label>
+      <input type="range" id="brush-size" min="1" max="10" value="2">
+      <button class="canvas-btn" id="btn-eraser" onclick="toggleEraser()">Ластик</button>
+      <button class="canvas-btn" onclick="undoLast()">↶ Отмена</button>
+      <button class="canvas-btn" onclick="clearCanvases()">Очистить рис.</button>
+    </div>
+
+    <div class="body-type-row">
+      <span class="vital-label">Телосложение:</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Дрищ</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Обычное</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Спортивное</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Качок</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Жиробас</span>
+      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Рельефное</span>
+    </div>
+
+    <div class="contact-row">
+      <span class="contact-label">Контактные данные:</span>
+      <input type="text" class="contact-input auto-width-input" placeholder="Email">
+      <input type="text" class="contact-input auto-width-input" placeholder="Telegram">
+      <input type="text" class="contact-input auto-width-input" placeholder="Телефон">
+    </div>
+    <div class="contact-row">
+      <input type="text" class="contact-input auto-width-input" placeholder="Инстаграм">
+      <input type="text" class="contact-input auto-width-input" placeholder="Вконтакте">
+      <input type="text" class="contact-input auto-width-input" placeholder="Last.fm">
+      <input type="text" class="contact-input auto-width-input" placeholder="Прочее">
+    </div>
+  </div>
+
+  <div>
+    <div class="param-group-title">Личностные характеристики</div>
+    <div id="params-personal"></div>
+
+    <div class="param-group-title">Хобби и увлечения</div>
+    <div id="params-hobby"></div>
+
+    <div class="param-group-title">Дополнительно</div>
+    <div class="additional-container" id="additional-container">
+    <button class="add-field-btn" id="add-field-btn">+ Добавь инфу</button>
+</div>
+  </div>
+
+</div>
+</div>
+
+  <div class="section">
+    <div class="section-title" style="text-align:center; font-size:16px;">Прочие жизненные достижения</div>
+    <div class="achievements-grid" id="achievements-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Перки</div>
+    <div class="perks-grid" id="perks-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title section-title-right">Вкусы и предпочтения</div>
+    <div class="tastes-grid" id="tastes-grid"></div>
+  </div>
+
+</div>
+
+<div class="save-bar">
+  <button class="save-btn" id="save-jpg-btn" onclick="saveAsJPG()">📷 Сохранить как JPG</button>
+  <button class="save-btn" onclick="clearAll()">🗑 Очистить всё</button>
+</div>
+
+<script>
+const svgTemplates = {
+  male: `
+    <circle cx="60" cy="35" r="28" fill="none" stroke="#222" stroke-width="2.5"/>
+    <circle cx="52" cy="30" r="3" fill="#222"/>
+    <circle cx="68" cy="30" r="3" fill="#222"/>
+    <path d="M45 63 Q60 72 75 63 L72 130 L48 130 Z" fill="none" stroke="#222" stroke-width="2.5"/>
+    <line x1="48" y1="75" x2="25" y2="120" stroke="#222" stroke-width="2.5"/>
+    <line x1="72" y1="75" x2="95" y2="120" stroke="#222" stroke-width="2.5"/>
+    <line x1="52" y1="130" x2="40" y2="200" stroke="#222" stroke-width="2.5"/>
+    <line x1="68" y1="130" x2="80" y2="200" stroke="#222" stroke-width="2.5"/>
+    <ellipse cx="37" cy="205" rx="12" ry="6" fill="none" stroke="#222" stroke-width="2.5"/>
+    <ellipse cx="83" cy="205" rx="12" ry="6" fill="none" stroke="#222" stroke-width="2.5"/>
+  `,
+  female: `
+    <circle cx="60" cy="32" r="26" fill="none" stroke="#222" stroke-width="2.5"/>
+    <circle cx="52" cy="28" r="3" fill="#222"/>
+    <circle cx="68" cy="28" r="3" fill="#222"/>
+    <path d="M42 58 Q60 68 78 58 L82 110 Q75 130 60 132 Q45 130 38 110 Z" fill="none" stroke="#222" stroke-width="2.5"/>
+    <line x1="44" y1="70" x2="22" y2="115" stroke="#222" stroke-width="2.5"/>
+    <line x1="76" y1="70" x2="98" y2="115" stroke="#222" stroke-width="2.5"/>
+    <line x1="50" y1="132" x2="42" y2="200" stroke="#222" stroke-width="2.5"/>
+    <line x1="70" y1="132" x2="78" y2="200" stroke="#222" stroke-width="2.5"/>
+    <ellipse cx="39" cy="205" rx="11" ry="5" fill="none" stroke="#222" stroke-width="2.5"/>
+    <ellipse cx="81" cy="205" rx="11" ry="5" fill="none" stroke="#222" stroke-width="2.5"/>
+  `
+};
+
+let currentTemplate = 'male';
+
+function setTemplate(name, btn) {
+  currentTemplate = name;
+  document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.body-svg').forEach(svg => {
+    svg.innerHTML = svgTemplates[name];
+  });
+  scheduleAutosave();
+}
+
+const ageValues = [];
+for (let i = 10; i <= 44; i++) ageValues.push(i);
+ageValues.push('45+');
+
+const heightValues = [];
+for (let i = 135; i <= 219; i++) heightValues.push(i);
+heightValues.push('220+');
+
+const weightValues = [];
+for (let i = 35; i <= 119; i++) weightValues.push(i);
+weightValues.push('120+');
+
+const basicParams = ['Здоровье','Сила','Выносливость','Ловкость','Магия','Интеллект','Привлекательность','Чувство юмора','Удача'];
+const sexParams = ['Половая жизнь','ФАП','Влечение к тянкам','Влечение к кунам','К другим объектам','Соблазнение'];
+const addictParams = ['Алкоголь','Табак','Вещества','Аниме','Видеоигры','Кино и сериалы','Книги','Музыка','Расточительство','Чревоугодие','Алчность','Лень'];
+const socialParams = ['Богатство','Трудолюбие','Терпение','Общительность','Благотворительность'];
+const personalParams = ['Гуманитарий','Технарь','Экстраверт','Интроверт','Девочка внутри'];
+const hobbyParams = ['Психология','Медицина','Кулинария','Игра на инструментах','Сочинение музыки','Вокал','Мода','Рисование','Фотографирование','Фото/видеомонтаж','Дизайн','3D-моделирование','Программирование','Графомания','Актёрская игра','Танцы','Рукоделие','Садоводство','Спорт','Туризм','Политика','Ремонтные навыки','Боевые навыки','Воровство'];
+
+const achievements = {
+  'Транспорт': ['Вождение авто','Езда на велосипеде','Езда на мотоцикле','Езда на коньках','Езда на скейте','Верховая езда'],
+  'Управление': ['Управление судном','Управление поездом','Управление аэросудном','Управление краном','Управление станком','Управление воен. техникой'],
+  'Навыки': ['Плавание','Рыбалка','Паркур','Турник','Качалка','Фокусы'],
+  'Статус': ['Брак','Развод','Вдовец','Дети','Сирота','Инвалид'],
+  'Интим': ['Девственность','Оральная девственность','Анальная девственность','Секс-игрушки','Извращения','Садо/мазо'],
+  'Образование': ['Среднее неполное','Среднее полное','Высшее','Второе высшее','Учёная степень','Военный билет']
+};
+
+const perks = [
+  'Анимешник','Битард','Олдфаг','Ньюфаг','Семён','Неймфаг','Ридонли','Тролль','Лжец','Рак','Хикка','Пиздолиз','Фурфаг','Феечка','Куклоёб','Тохоблядок','Пониёб',
+  'Быдло','Небыдло','Нитакойкакфсе','Социоблядь','Социофоб','Хипстер','Активист ЛГБТ','Йойшица','Асексуал','Чайлдфри','Трап','Гомофоб','Гомофобофоб','Мудак','Мажор','Мастер отсоса','Шлюха',
+  'Лоли','Педобир','Слоу','Тамблергёрл','Камвхора','Аттеншнвхор','Поэзер','Хомячок','Сатанист','Православнутый','Атеист','Параноик','Алкоголик','Придурок','Нищеброд','Пацреот','Ватник',
+  'Граммар-наци','Альфа','Бета','Омега','Гик','Нёрд','Нигилист','Говнарь','Патлач','Психонавт','Наркоман','Линуксоид','Турникмен','Сталкер','Хакер','Яблодрочер','Предатель',
+  'Технофашист','Растаман','Рептилоид','Маг','Эльф','Живу по понятиям','Маньяк','Клаббер','Популярный','Фанат ЗОЖ','Веган','Сосед с дрелью','Извращенец','Копрофил','Футфетишист','Маргинал','Няша-стесняша',
+  'Унтерменш','Летсплеер','Киберспортсмен','Стример','Видеоблоггер','Экстремал','Поцыент','Сестролюб','Зоофил','Избранный','Школьник','Шотакот','Ролевик','Моралфаг','Суицидник','Грустненький','Мамина умничка',
+  'Чмо','Мачо','Анархист','Неудачник','Тупая пизда','Задрот','Смайлофаг','Кармодочер','Фошыст','Ребёнок индиго','Офисный планктон','Фансабер','Мизантроп','Ламер','Консолеблядь','Барыга','Казуал',
+  'Педовка','Дачник','Диггер','Пешеход','Гопник','Автостопщик','Наёмник','Картавый','Читер','Фрилансер','Фотоонанист','Сперва добейся','Демагог','Фореваэлоун','Луркоёб','Бревно','Понаехавший'
+];
+
+const tastes = [
+  { title: 'Еда, напитки и вещества', key: 'food' },
+  { title: 'Фильмы и сериалы', key: 'films' },
+  { title: 'Личности и персонажи', key: 'persons' },
+  { title: 'Игры', key: 'games' },
+  { title: 'Литература и искусство', key: 'literature' },
+  { title: 'Мультфильмы и аниме', key: 'anime' },
+  { title: 'Музыка', key: 'music' },
+  { title: 'Гаджеты и девайсы', key: 'gadgets' },
+  { title: 'Фетиши', key: 'fetishes' },
+  { title: 'Увлечения', key: 'hobbies2' },
+  { title: 'Мечты и цели в жизни', key: 'dreams' },
+  { title: 'Прочая инфа', key: 'boards' }
+];
+
+// ============ RENDER ============
+
+function createScale(containerId, values, step = 1) {
+  const container = document.getElementById(containerId);
+  values.forEach((v, index) => {
+    const el = document.createElement('div');
+    el.className = 'scale-item';
+    el.dataset.value = v;
+    el.dataset.index = index;
+    el.style.zIndex = index;
+    // Цифра показывается только если значение кратно step
+    const showNum = (typeof v === 'number' && v % step === 0) || 
+                    (typeof v === 'string' && v.endsWith('+'));
+    el.innerHTML =
+      '<svg class="scale-shape" viewBox="0 0 30 20" preserveAspectRatio="none">' +
+        '<polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/>' +
+      '</svg>' +
+      '<div class="scale-num' + (showNum ? '' : ' hidden') + '">' + v + '</div>';
+    el.onclick = function() {
+      const items = container.querySelectorAll('.scale-item');
+      const clickedIndex = parseInt(this.dataset.index);
+      items.forEach((item, i) => {
+        if (i <= clickedIndex) item.classList.add('filled');
+        else item.classList.remove('filled');
+      });
+      scheduleAutosave();
+    };
+    container.appendChild(el);
+  });
+}
+
+function createParamGroup(containerId, items) {
+  const container = document.getElementById(containerId);
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'param-row';
+    row.dataset.paramName = item;
+    const name = document.createElement('span');
+    name.className = 'param-name';
+    name.textContent = item;
+    const bar = document.createElement('div');
+    bar.className = 'param-bar';
+for (let i = 0; i < 10; i++) {
+  const arrow = document.createElement('div');
+  arrow.className = 'param-arrow';
+  arrow.dataset.index = i;
+  arrow.innerHTML = '<svg viewBox="0 0 20 16"><polygon points="0,0 15,0 20,8 15,16 0,16 5,8"/></svg>';
+      arrow.onclick = function() {
+        const arrows = bar.querySelectorAll('.param-arrow');
+        const idx = parseInt(this.dataset.index);
+        arrows.forEach((a, j) => {
+          if (j <= idx) a.classList.add('filled');
+          else a.classList.remove('filled');
+        });
+        scheduleAutosave();
+      };
+      bar.appendChild(arrow);
+    }
+    row.appendChild(name);
+    row.appendChild(bar);
+    container.appendChild(row);
+  });
+}
+
+function createAchievements() {
+  const grid = document.getElementById('achievements-grid');
+  Object.entries(achievements).forEach(([colName, items]) => {
+    const col = document.createElement('div');
+    col.className = 'achievement-col';
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'achievement-item';
+      div.onclick = function() { this.classList.toggle('filled'); scheduleAutosave(); };
+      div.innerHTML =
+        '<div class="achievement-arrow">' +
+          '<svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg>' +
+        '</div>' +
+        '<span>' + item + '</span>';
+      col.appendChild(div);
+    });
+    grid.appendChild(col);
+  });
+}
+
+function createPerks() {
+  const grid = document.getElementById('perks-grid');
+  perks.forEach(perk => {
+    const el = document.createElement('div');
+    el.className = 'perk-item';
+    el.onclick = function() { this.classList.toggle('filled'); scheduleAutosave(); };
+    el.innerHTML =
+      '<div class="perk-arrow">' +
+        '<svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg>' +
+      '</div>' +
+      '<span>' + perk + '</span>';
+    grid.appendChild(el);
+  });
+
+  // Кнопка добавления своего перка
+  const addRow = document.createElement('div');
+  addRow.className = 'perk-add-row';
+  addRow.innerHTML =
+    '<input type="text" class="perk-add-input" id="perk-add-input" placeholder="Свой перк...">' +
+    '<button class="perk-add-btn" id="perk-add-btn">+ Добавить</button>';
+  grid.appendChild(addRow);
+
+  document.getElementById('perk-add-btn').addEventListener('click', function() {
+    const input = document.getElementById('perk-add-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const el = document.createElement('div');
+    el.className = 'perk-item';
+    el.dataset.custom = 'true';
+    el.onclick = function() { this.classList.toggle('filled'); scheduleAutosave(); };
+    el.innerHTML =
+      '<div class="perk-arrow">' +
+        '<svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg>' +
+      '</div>' +
+      '<span>' + text + '</span>';
+    grid.insertBefore(el, addRow);
+    input.value = '';
+    scheduleAutosave();
+  });
+
+  // Добавление по Enter
+  document.getElementById('perk-add-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('perk-add-btn').click();
+    }
+  });
+}
+
+function autoExpandTextarea(el) {
+  el.style.height = 'auto';
+  const newHeight = Math.max(60, el.scrollHeight);
+  el.style.height = newHeight + 'px';
+}
+
+function createTastes() {
+  const grid = document.getElementById('tastes-grid');
+  tastes.forEach(t => {
+    const block = document.createElement('div');
+    block.className = 'taste-block';
+    const header = document.createElement('div');
+    header.className = 'taste-header';
+    header.textContent = t.title;
+    const textarea = document.createElement('textarea');
+    textarea.className = 'taste-textarea auto-expand';
+    textarea.placeholder = 'Введи максимум 1500 символов';
+    textarea.dataset.key = t.key;
+    textarea.dataset.maxlength = '1500';
+    textarea.rows = 1;
+    textarea.addEventListener('input', function() {
+  // Ограничение длины
+  if (this.value.length > 1500) {
+    this.value = this.value.substring(0, 1500);
+  }
+  // Подсветка при приближении к лимиту
+  if (this.value.length >= 1400) {
+    this.classList.add('over-limit');
+  } else {
+    this.classList.remove('over-limit');
+  }
+  autoExpandTextarea(this);
+  scheduleAutosave();
+});
+    block.appendChild(header);
+    block.appendChild(textarea);
+    grid.appendChild(block);
+  });
+}
+
+let additionalFieldCounter = 0;
+
+function addAdditionalField(value = '') {
+  const container = document.getElementById('additional-container');
+  const btn = document.getElementById('add-field-btn');
+  
+  const row = document.createElement('div');
+  row.className = 'add-text-field';
+  row.dataset.fieldId = 'addfield_' + (additionalFieldCounter++);
+  
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'auto-width-input';
+  input.placeholder = 'Введите...';
+  input.value = value;
+  input.addEventListener('input', function() {
+    autoExpandInput(this);
+    scheduleAutosave();
+  });
+  
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'remove-field';
+  removeBtn.textContent = '×';
+  removeBtn.title = 'Удалить поле';
+  removeBtn.onclick = function() {
+    row.remove();
+    scheduleAutosave();
+  };
+  
+  row.appendChild(input);
+  row.appendChild(removeBtn);
+  container.insertBefore(row, btn);
+  
+  // Авторасширение после вставки
+  if (value) autoExpandInput(input);
+  else autoExpandInput(input);
+  
+  scheduleAutosave();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('add-field-btn').addEventListener('click', function() {
+    addAdditionalField();
+  });
+});
+
+// ============ AUTO-EXPAND TEXTAREA ============
+
+function autoExpandTextarea(el) {
+  // Сброс для корректного измерения
+  el.style.height = 'auto';
+  const newHeight = Math.max(60, Math.min(el.scrollHeight, 500));
+  el.style.height = newHeight + 'px';
+}
+
+// ============ AUTO-EXPAND INPUT (contact) ============
+
+function autoExpandInput(el) {
+  const minW = 80;
+  const maxW = 280;
+  // Создаём временный элемент для измерения
+  const span = document.createElement('span');
+  span.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-size:12px;font-family:inherit;padding:4px 8px;';
+  span.textContent = el.value || el.placeholder;
+  document.body.appendChild(span);
+  const w = Math.min(Math.max(span.offsetWidth + 16, minW), maxW);
+  document.body.removeChild(span);
+  el.style.width = w + 'px';
+}
+
+function initAutoExpandInputs() {
+  document.querySelectorAll('.auto-width-input').forEach(inp => {
+    inp.addEventListener('input', function() {
+      autoExpandInput(this);
+      scheduleAutosave();
+    });
+    inp.addEventListener('focus', function() {
+      autoExpandInput(this);
+    });
+    // Начальная ширина
+    autoExpandInput(inp);
+  });
+}
+
+// ============ CANVAS DRAWING ============
+
+const canvasStates = {};
+let isDrawing = false;
+let isEraser = false;
+let lastX = 0, lastY = 0;
+
+function initCanvases() {
+  document.querySelectorAll('.body-figure').forEach(figure => {
+    const name = figure.dataset.figure;
+    const canvas = figure.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0)';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasStates[name] = { history: [], historyIndex: -1 };
+    saveCanvasState(name);
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', handleTouch, { passive: false });
+    canvas.addEventListener('touchmove', handleTouch, { passive: false });
+    canvas.addEventListener('touchend', endDraw);
+  });
+}
+
+function getCanvasCoords(canvas, e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top) * scaleY
+  };
+}
+
+function startDraw(e) {
+  isDrawing = true;
+  const canvas = e.target;
+  const coords = getCanvasCoords(canvas, e);
+  lastX = coords.x;
+  lastY = coords.y;
+}
+
+function draw(e) {
+  if (!isDrawing) return;
+  const canvas = e.target;
+  const ctx = canvas.getContext('2d');
+  const coords = getCanvasCoords(canvas, e);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(coords.x, coords.y);
+  const color = document.getElementById('brush-color').value;
+  const size = parseInt(document.getElementById('brush-size').value);
+  ctx.strokeStyle = isEraser ? 'rgba(0,0,0,0)' : color;
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
+  ctx.stroke();
+  lastX = coords.x;
+  lastY = coords.y;
+}
+
+function endDraw(e) {
+  if (isDrawing) {
+    isDrawing = false;
+    const canvas = e.target;
+    const figure = canvas.closest('.body-figure');
+    const name = figure.dataset.figure;
+    saveCanvasState(name);
+    scheduleAutosave();
+  }
+}
+
+function handleTouch(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  if (!touch) return;
+  const mouseEvent = new MouseEvent(
+    e.type === 'touchstart' ? 'mousedown' : 'mousemove',
+    { clientX: touch.clientX, clientY: touch.clientY }
+  );
+  if (e.type === 'touchstart') startDraw(mouseEvent);
+  else draw(mouseEvent);
+}
+
+function saveCanvasState(name) {
+  const figure = document.querySelector(`.body-figure[data-figure="${name}"]`);
+  const canvas = figure.querySelector('canvas');
+  const state = canvasStates[name];
+  state.history = state.history.slice(0, state.historyIndex + 1);
+  state.history.push(canvas.toDataURL());
+  state.historyIndex++;
+  if (state.history.length > 20) {
+    state.history.shift();
+    state.historyIndex--;
+  }
+}
+
+function undoLast() {
+  document.querySelectorAll('.body-figure').forEach(figure => {
+    const name = figure.dataset.figure;
+    const state = canvasStates[name];
+    if (state.historyIndex > 0) {
+      state.historyIndex--;
+      const canvas = figure.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
+      img.src = state.history[state.historyIndex];
+    }
+  });
+  scheduleAutosave();
+}
+
+function toggleEraser() {
+  isEraser = !isEraser;
+  document.getElementById('btn-eraser').classList.toggle('active', isEraser);
+}
+
+function clearCanvases() {
+  if (!confirm('Очистить все рисунки?')) return;
+  document.querySelectorAll('.body-figure').forEach(figure => {
+    const name = figure.dataset.figure;
+    const canvas = figure.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasStates[name] = { history: [], historyIndex: -1 };
+    saveCanvasState(name);
+  });
+  scheduleAutosave();
+}
+
+// ============ INTERACTIONS ============
+
+function toggleOptPatch(el) {
+  const group = el.dataset.group;
+  if (group) {
+    document.querySelectorAll(`.opt-patch[data-group="${group}"]`).forEach(o => o.classList.remove('filled'));
+  }
+  el.classList.toggle('filled');
+  scheduleAutosave();
+}
+
+function toggleOptPatchMulti(el) {
+  el.classList.toggle('filled');
+  scheduleAutosave();
+}
+
+function toggleTemp(el) {
+  el.classList.toggle('filled');
+  scheduleAutosave();
+}
+
+function selectWorldview(el) {
+  document.querySelectorAll('.opt-patch[data-align]').forEach(p => p.classList.remove('filled'));
+  el.classList.add('filled');
+  scheduleAutosave();
+}
+
+// ============ AUTOSAVE ============
+
+let autosaveTimer = null;
+function scheduleAutosave() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    const data = collectData();
+    localStorage.setItem('anonAnketa_autosave', JSON.stringify(data));
+    showAutosaveIndicator();
+  }, 400);
+}
+
+
+// ============ COLLECT DATA ============
+
+function collectData() {
+  const data = {};
+
+  ['age-scale','height-scale','weight-scale'].forEach(id => {
+    const filledItems = document.querySelectorAll(`#${id} .scale-item.filled`);
+    if (filledItems.length > 0) {
+      const lastFilled = filledItems[filledItems.length - 1];
+      data[id] = parseInt(lastFilled.dataset.index);
+    }
+  });
+
+document.querySelectorAll('.opt-patch.filled').forEach(el => {
+  const group = el.dataset.group || 'general';
+  if (!data['patch_' + group]) data['patch_' + group] = [];
+  data['patch_' + group].push(el.querySelector('span').textContent.trim());
+});
+
+  document.querySelectorAll('.param-row').forEach(row => {
+    const name = row.dataset.paramName;
+    const filled = row.querySelectorAll('.param-cell.filled').length;
+    if (filled > 0) data['param_' + name] = filled;
+  });
+
+  document.querySelectorAll('.temp-cell.filled').forEach(el => {
+    if (!data.temperament) data.temperament = [];
+    data.temperament.push(el.textContent.trim());
+  });
+
+const filledWorldview = document.querySelector('.opt-patch[data-align].filled');
+if (filledWorldview) {
+  data.worldview = filledWorldview.dataset.align;
+}
+
+  document.querySelectorAll('.opt[data-group="bodytype"].filled').forEach(el => {
+    data.bodytype = el.textContent.trim();
+  });
+
+document.querySelectorAll('.achievement-item.filled').forEach(el => {
+  if (!data.achievements) data.achievements = [];
+  data.achievements.push(el.querySelector('span').textContent.trim());
+});
+
+const defaultPerks = [];
+const customPerks = [];
+document.querySelectorAll('.perk-item.filled').forEach(el => {
+  if (el.dataset.custom === 'true') {
+    customPerks.push(el.querySelector('span').textContent.trim());
+  } else {
+    defaultPerks.push(el.querySelector('span').textContent.trim());
+  }
+});
+if (defaultPerks.length) data.perks = defaultPerks;
+if (customPerks.length) data.customPerks = customPerks;
+
+const additionalFields = [];
+document.querySelectorAll('#additional-container .add-text-field').forEach(row => {
+  const input = row.querySelector('input');
+  if (input.value.trim()) {
+    additionalFields.push(input.value.trim());
+  }
+});
+
+
+if (additionalFields.length > 0) data.additionalFields = additionalFields;
+
+  document.querySelectorAll('.taste-textarea').forEach(ta => {
+    if (ta.value.trim()) data['taste_' + ta.dataset.key] = ta.value;
+  });
+
+  const contacts = [];
+  document.querySelectorAll('.contact-input').forEach(inp => {
+    if (inp.value.trim()) {
+      const prev = inp.previousElementSibling;
+      const label = prev && prev.classList.contains('opt') ? prev.textContent.trim() : '';
+      contacts.push({ label, value: inp.value.trim() });
+    }
+  });
+  if (contacts.length) data.contacts = contacts;
+
+  data.currentTemplate = currentTemplate;
+  data.canvases = {};
+  document.querySelectorAll('.body-figure').forEach(figure => {
+    const name = figure.dataset.figure;
+    const canvas = figure.querySelector('canvas');
+    data.canvases[name] = canvas.toDataURL('image/png');
+  });
+
+  return data;
+}
+
+// ============ RESTORE ============
+
+function restoreData() {
+  const raw = localStorage.getItem('anonAnketa_autosave');
+  if (!raw) return;
+  let data;
+  try { data = JSON.parse(raw); } catch(e) { return; }
+  if (!data || typeof data !== 'object') return;
+
+  ['age-scale','height-scale','weight-scale'].forEach(id => {
+    if (data[id] !== undefined) {
+      const items = document.querySelectorAll(`#${id} .scale-item`);
+      items.forEach((item, i) => {
+        if (i <= data[id]) item.classList.add('filled');
+        else item.classList.remove('filled');
+      });
+    }
+  });
+
+// Восстановление старых opt
+Object.entries(data).forEach(([key, val]) => {
+  if (key.startsWith('param_') || key.startsWith('patch_') || key.startsWith('taste_')) return;
+  if (['worldview','contacts','achievements','perks','additional','temperament','canvases','currentTemplate','customPerks','additionalFields'].includes(key)) return;
+  if (Array.isArray(val)) {
+    val.forEach(v => {
+      document.querySelectorAll(`.opt[data-group="${key}"]`).forEach(o => {
+        if (o.textContent.trim() === v) o.classList.add('filled');
+      });
+    });
+  }
+});
+
+// Восстановление патч-опций (пол, пара, ориентация, страна, город, темперамент)
+Object.entries(data).forEach(([key, val]) => {
+  if (!key.startsWith('patch_')) return;
+  const group = key.substring(6);
+  val.forEach(v => {
+    document.querySelectorAll(`.opt-patch[data-group="${group}"]`).forEach(o => {
+      if (o.querySelector('span').textContent.trim() === v) o.classList.add('filled');
+    });
+  });
+});
+
+  if (data.temperament) {
+    data.temperament.forEach(v => {
+      document.querySelectorAll('.temp-cell').forEach(el => {
+        if (el.textContent.trim() === v) el.classList.add('filled');
+      });
+    });
+  }
+
+if (data.worldview) {
+  const patch = document.querySelector(`.opt-patch[data-align="${data.worldview}"]`);
+  if (patch) patch.classList.add('filled');
+}
+
+if (data.achievements) {
+  data.achievements.forEach(v => {
+    document.querySelectorAll('.achievement-item').forEach(el => {
+      if (el.querySelector('span').textContent.trim() === v) {
+        el.classList.add('filled');
+      }
+    });
+  });
+}
+
+if (data.perks) {
+  data.perks.forEach(v => {
+    document.querySelectorAll('.perk-item:not([data-custom])').forEach(el => {
+      if (el.querySelector('span').textContent.trim() === v) el.classList.add('filled');
+    });
+  });
+}
+
+if (data.customPerks) {
+  data.customPerks.forEach(v => {
+    const el = document.createElement('div');
+    el.className = 'perk-item filled';
+    el.dataset.custom = 'true';
+    el.onclick = function() { this.classList.toggle('filled'); scheduleAutosave(); };
+    el.innerHTML =
+      '<div class="perk-arrow">' +
+        '<svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg>' +
+      '</div>' +
+      '<span>' + v + '</span>';
+    const addRow = document.querySelector('.perk-add-row');
+    if (addRow) addRow.parentNode.insertBefore(el, addRow);
+  });
+}
+
+if (data.additionalFields) {
+  data.additionalFields.forEach(val => {
+    addAdditionalField(val);
+  });
+}
+
+// Восстановление патч-опций
+Object.entries(data).forEach(([key, val]) => {
+  if (!key.startsWith('patch_')) return;
+  const group = key.substring(6);
+  val.forEach(v => {
+
+// Старые opt (если остались где-то)
+document.querySelectorAll('.opt.filled').forEach(el => {
+  const group = el.dataset.group || 'general';
+  if (!data[group]) data[group] = [];
+  data[group].push(el.textContent.trim());
+});
+
+// Патч-опции (пол, пара, ориентация, страна, город, темперамент)
+document.querySelectorAll('.opt-patch.filled').forEach(el => {
+  const group = el.dataset.group || 'general';
+  if (!data['patch_' + group]) data['patch_' + group] = [];
+  data['patch_' + group].push(el.querySelector('span').textContent.trim());
+});
+
+    document.querySelectorAll(`.opt-patch[data-group="${group}"]`).forEach(o => {
+      if (o.querySelector('span').textContent.trim() === v) o.classList.add('filled');
+    });
+  });
+});
+
+  if (data.contacts) {
+    const inputs = document.querySelectorAll('.contact-input');
+    data.contacts.forEach((c, i) => {
+      if (inputs[i]) {
+        inputs[i].value = c.value;
+        autoExpandInput(inputs[i]);
+        if (c.label) {
+          const prev = inputs[i].previousElementSibling;
+          if (prev && prev.classList.contains('opt')) prev.classList.add('filled');
+        }
+      }
+    });
+  }
+
+  if (data.currentTemplate) {
+    const btn = document.querySelector(`.template-btn[data-template="${data.currentTemplate}"]`);
+    if (btn) setTemplate(data.currentTemplate, btn);
+  }
+
+  if (data.canvases) {
+    Object.entries(data.canvases).forEach(([name, dataUrl]) => {
+      const figure = document.querySelector(`.body-figure[data-figure="${name}"]`);
+      if (!figure) return;
+      const canvas = figure.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        canvasStates[name] = { history: [dataUrl], historyIndex: 0 };
+      };
+      img.src = dataUrl;
+    });
+  }
+}
+
+// ============ SAVE AS JPG ============
+async function saveAsJPG() {
+  const btn = document.getElementById('save-jpg-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Генерация...';
+
+  const data = collectData();
+  localStorage.setItem('anonAnketa_autosave', JSON.stringify(data));
+
+  try {
+    const container = document.getElementById('anketa-container');
+
+    // --- 1. Заменяем все input/textarea на div-клоны для корректного рендера ---
+    const replacements = [];
+
+    // Textarea (блоки вкусов)
+    document.querySelectorAll('.taste-textarea').forEach(ta => {
+      const div = document.createElement('div');
+      div.className = 'taste-textarea-render';
+      div.style.cssText = `
+        width: 100%;
+        padding: 8px;
+        font-size: 12px;
+        font-family: inherit;
+        line-height: 1.5;
+        min-height: 60px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        color: #222;
+        background: #fff;
+      `;
+      div.textContent = ta.value || '';
+      ta.parentNode.replaceChild(div, ta);
+      replacements.push({ original: ta, replacement: div });
+    });
+
+    // Input поля (контакты, страна, город, доп. поля)
+    document.querySelectorAll('.contact-input, .auto-width-input').forEach(inp => {
+      // Пропускаем уже заменённые
+      if (inp.tagName !== 'INPUT') return;
+      const div = document.createElement('div');
+      div.className = 'input-render';
+      div.style.cssText = `
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-family: inherit;
+        color: #222;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-width: 80px;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        line-height: 1.4;
+      `;
+      div.textContent = inp.value || inp.placeholder || '';
+      inp.parentNode.replaceChild(div, inp);
+      replacements.push({ original: inp, replacement: div });
+    });
+
+    // Кнопки canvas-controls, template-btns, add-field-btn, remove-field — скрываем
+    const hiddenElements = [];
+    document.querySelectorAll('.canvas-controls, .template-btns, .add-field-btn, .remove-field, .save-bar').forEach(el => {
+      el.style.display = 'none';
+      hiddenElements.push(el);
+    });
+
+    // --- 2. Ждём рендер DOM ---
+    await new Promise(r => setTimeout(r, 100));
+
+    // --- 3. Рендерим ---
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      backgroundColor: '#fafafa',
+      useCORS: true,
+      logging: false,
+      windowWidth: container.scrollWidth,
+      windowHeight: container.scrollHeight
+    });
+
+    // --- 4. Возвращаем всё обратно ---
+    replacements.forEach(({ original, replacement }) => {
+      replacement.parentNode.replaceChild(original, replacement);
+    });
+    hiddenElements.forEach(el => { el.style.display = ''; });
+
+    // --- 5. Скачиваем ---
+    const jpgData = canvas.toDataURL('image/jpeg', 0.92);
+    const link = document.createElement('a');
+    link.download = 'anketa_anona_' + new Date().toISOString().slice(0,10) + '.jpg';
+    link.href = jpgData;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  } catch (err) {
+    alert('❌ Ошибка при сохранении: ' + err.message);
+    // На всякий случай возвращаем всё
+    document.querySelectorAll('.taste-textarea-render, .input-render').forEach(div => {
+      // Если что-то осталось — не страшно, пользователь обновит страницу
+    });
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📷 Сохранить как JPG';
+  }
+}
+
+// ============ CLEAR ALL ============
+
+function clearAll() {
+  if (!confirm('Очистить все заполненные поля и изображения?')) return;
+  document.querySelectorAll('.filled, .filled-lawful, .filled-chaotic, .filled-good, .filled-neutral, .filled-evil, .filled-true').forEach(el => {
+    el.className = el.className.replace(/filled[\w-]*/g, '').trim();
+    if (!el.className) el.removeAttribute('class');
+  });
+  document.querySelectorAll('.taste-textarea').forEach(ta => {
+    ta.value = '';
+    ta.style.height = '60px';
+  });
+  document.querySelectorAll('.contact-input').forEach(inp => {
+    inp.value = '';
+    inp.style.width = '';
+  });
+  // Очистить динамические доп. поля
+    document.querySelectorAll('#additional-container .add-text-field').forEach(row => row.remove());
+    additionalFieldCounter = 0;
+  localStorage.removeItem('anonAnketa_autosave');
+  
+    if (!confirm('Очистить все рисунки?')) return;
+  document.querySelectorAll('.body-figure').forEach(figure => {
+    const name = figure.dataset.figure;
+    const canvas = figure.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasStates[name] = { history: [], historyIndex: -1 };
+    saveCanvasState(name);
+  });
+  scheduleAutosave();
+}
+
+// ============ INIT ============
+
+createScale('age-scale', ageValues, 5);
+createScale('height-scale', heightValues, 5);
+createScale('weight-scale', weightValues, 5);
+createParamGroup('params-basic', basicParams);
+createParamGroup('params-sex', sexParams);
+createParamGroup('params-addict', addictParams);
+createParamGroup('params-social', socialParams);
+createParamGroup('params-personal', personalParams);
+createParamGroup('params-hobby', hobbyParams);
+createAchievements();
+createPerks();
+createTastes();
+
+
+document.querySelectorAll('.body-svg').forEach(svg => {
+  svg.innerHTML = svgTemplates.male;
+});
+
+initCanvases();
+initAutoExpandInputs();
+restoreData();
+</script>
+
+</body>
+</html>
+</file_write>
