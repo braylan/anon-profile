@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Анкета Анона</title>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='8,8 46,8 58,32 46,56 8,56 20,32' fill='%23e87722' stroke='%23c46010' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='8,8 46,8 58,32 46,56 8,56 20,32' fill='%23e87722' stroke='%23c46010' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
@@ -1201,7 +1204,7 @@ function createScale(containerId, values, step = 1) {
     el.dataset.value = v;
     el.dataset.index = index;
     el.style.zIndex = index;
-    // Цифра показывается только если значение кратно step
+  
     const showNum = (typeof v === 'number' && v % step === 0) || 
                     (typeof v === 'string' && v.endsWith('+'));
     el.innerHTML =
@@ -1289,7 +1292,7 @@ function createPerks() {
     grid.appendChild(el);
   });
 
-  // Кнопка добавления своего перка
+
   const addRow = document.createElement('div');
   addRow.className = 'perk-add-row';
   addRow.innerHTML =
@@ -1316,7 +1319,7 @@ function createPerks() {
     scheduleAutosave();
   });
 
-  // Добавление по Enter
+ 
   document.getElementById('perk-add-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       document.getElementById('perk-add-btn').click();
@@ -1345,11 +1348,11 @@ function createTastes() {
     textarea.dataset.maxlength = '1500';
     textarea.rows = 1;
     textarea.addEventListener('input', function() {
-  // Ограничение длины
+
   if (this.value.length > 1500) {
     this.value = this.value.substring(0, 1500);
   }
-  // Подсветка при приближении к лимиту
+
   if (this.value.length >= 1400) {
     this.classList.add('over-limit');
   } else {
@@ -1397,7 +1400,7 @@ function addAdditionalField(value = '') {
   row.appendChild(removeBtn);
   container.insertBefore(row, btn);
   
-  // Авторасширение после вставки
+
   if (value) autoExpandInput(input);
   else autoExpandInput(input);
   
@@ -1413,7 +1416,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============ AUTO-EXPAND TEXTAREA ============
 
 function autoExpandTextarea(el) {
-  // Сброс для корректного измерения
+
   el.style.height = 'auto';
   const newHeight = Math.max(60, Math.min(el.scrollHeight, 500));
   el.style.height = newHeight + 'px';
@@ -1424,7 +1427,7 @@ function autoExpandTextarea(el) {
 function autoExpandInput(el) {
   const minW = 80;
   const maxW = 280;
-  // Создаём временный элемент для измерения
+
   const span = document.createElement('span');
   span.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-size:12px;font-family:inherit;padding:4px 8px;';
   span.textContent = el.value || el.placeholder;
@@ -1443,7 +1446,7 @@ function initAutoExpandInputs() {
     inp.addEventListener('focus', function() {
       autoExpandInput(this);
     });
-    // Начальная ширина
+   
     autoExpandInput(inp);
   });
 }
@@ -1620,7 +1623,6 @@ function scheduleAutosave() {
   autosaveTimer = setTimeout(() => {
     const data = collectData();
     localStorage.setItem('anonAnketa_autosave', JSON.stringify(data));
-    showAutosaveIndicator();
   }, 400);
 }
 
@@ -1639,9 +1641,16 @@ function collectData() {
   });
 
 document.querySelectorAll('.opt-patch.filled').forEach(el => {
+  const span = el.querySelector('span');
+  if (!span) return;
   const group = el.dataset.group || 'general';
+  
+  if (el.dataset.align) {
+    data.worldview = el.dataset.align;
+    return;
+  }
   if (!data['patch_' + group]) data['patch_' + group] = [];
-  data['patch_' + group].push(el.querySelector('span').textContent.trim());
+  data['patch_' + group].push(span.textContent.trim());
 });
 
   document.querySelectorAll('.param-row').forEach(row => {
@@ -1736,7 +1745,7 @@ function restoreData() {
     }
   });
 
-// Восстановление старых opt
+
 Object.entries(data).forEach(([key, val]) => {
   if (key.startsWith('param_') || key.startsWith('patch_') || key.startsWith('taste_')) return;
   if (['worldview','contacts','achievements','perks','additional','temperament','canvases','currentTemplate','customPerks','additionalFields'].includes(key)) return;
@@ -1749,7 +1758,7 @@ Object.entries(data).forEach(([key, val]) => {
   }
 });
 
-// Восстановление патч-опций (пол, пара, ориентация, страна, город, темперамент)
+
 Object.entries(data).forEach(([key, val]) => {
   if (!key.startsWith('patch_')) return;
   const group = key.substring(6);
@@ -1813,20 +1822,20 @@ if (data.additionalFields) {
   });
 }
 
-// Восстановление патч-опций
+
 Object.entries(data).forEach(([key, val]) => {
   if (!key.startsWith('patch_')) return;
   const group = key.substring(6);
   val.forEach(v => {
 
-// Старые opt (если остались где-то)
+
 document.querySelectorAll('.opt.filled').forEach(el => {
   const group = el.dataset.group || 'general';
   if (!data[group]) data[group] = [];
   data[group].push(el.textContent.trim());
 });
 
-// Патч-опции (пол, пара, ориентация, страна, город, темперамент)
+
 document.querySelectorAll('.opt-patch.filled').forEach(el => {
   const group = el.dataset.group || 'general';
   if (!data['patch_' + group]) data['patch_' + group] = [];
@@ -1887,10 +1896,10 @@ async function saveAsJPG() {
   try {
     const container = document.getElementById('anketa-container');
 
-    // --- 1. Заменяем все input/textarea на div-клоны для корректного рендера ---
+
     const replacements = [];
 
-    // Textarea (блоки вкусов)
+  
     document.querySelectorAll('.taste-textarea').forEach(ta => {
       const div = document.createElement('div');
       div.className = 'taste-textarea-render';
@@ -1911,9 +1920,9 @@ async function saveAsJPG() {
       replacements.push({ original: ta, replacement: div });
     });
 
-    // Input поля (контакты, страна, город, доп. поля)
+   
     document.querySelectorAll('.contact-input, .auto-width-input').forEach(inp => {
-      // Пропускаем уже заменённые
+   
       if (inp.tagName !== 'INPUT') return;
       const div = document.createElement('div');
       div.className = 'input-render';
@@ -1939,17 +1948,17 @@ async function saveAsJPG() {
       replacements.push({ original: inp, replacement: div });
     });
 
-    // Кнопки canvas-controls, template-btns, add-field-btn, remove-field — скрываем
+
     const hiddenElements = [];
     document.querySelectorAll('.canvas-controls, .template-btns, .add-field-btn, .remove-field, .save-bar').forEach(el => {
       el.style.display = 'none';
       hiddenElements.push(el);
     });
 
-    // --- 2. Ждём рендер DOM ---
+   
     await new Promise(r => setTimeout(r, 100));
 
-    // --- 3. Рендерим ---
+  
     const canvas = await html2canvas(container, {
       scale: 2,
       backgroundColor: '#fafafa',
@@ -1959,13 +1968,13 @@ async function saveAsJPG() {
       windowHeight: container.scrollHeight
     });
 
-    // --- 4. Возвращаем всё обратно ---
+  
     replacements.forEach(({ original, replacement }) => {
       replacement.parentNode.replaceChild(original, replacement);
     });
     hiddenElements.forEach(el => { el.style.display = ''; });
 
-    // --- 5. Скачиваем ---
+   
     const jpgData = canvas.toDataURL('image/jpeg', 0.92);
     const link = document.createElement('a');
     link.download = 'anketa_anona_' + new Date().toISOString().slice(0,10) + '.jpg';
@@ -1976,9 +1985,9 @@ async function saveAsJPG() {
 
   } catch (err) {
     alert('❌ Ошибка при сохранении: ' + err.message);
-    // На всякий случай возвращаем всё
+
     document.querySelectorAll('.taste-textarea-render, .input-render').forEach(div => {
-      // Если что-то осталось — не страшно, пользователь обновит страницу
+   
     });
   } finally {
     btn.disabled = false;
@@ -2002,7 +2011,7 @@ function clearAll() {
     inp.value = '';
     inp.style.width = '';
   });
-  // Очистить динамические доп. поля
+
     document.querySelectorAll('#additional-container .add-text-field').forEach(row => row.remove());
     additionalFieldCounter = 0;
   localStorage.removeItem('anonAnketa_autosave');
