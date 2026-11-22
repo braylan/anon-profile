@@ -919,9 +919,9 @@
       <span class="vital-label">Мировоззрение:</span>
       <div class="worldview-grid">
         <div></div>
-        <div class="worldview-axis">Lawful</div>
-        <div class="worldview-axis">Neutral</div>
-        <div class="worldview-axis">Chaotic</div>
+        <div class="worldview-axis">Lawful </div>
+        <div class="worldview-axis">Neutral </div>
+        <div class="worldview-axis">Chaotic </div>
         
         <div class="worldview-axis">Good</div>
         <div class="opt-patch" data-align="lg" onclick="selectWorldview(this)">
@@ -1017,15 +1017,33 @@
       <button class="canvas-btn" onclick="clearCanvases()">Очистить рис.</button>
     </div>
 
-    <div class="body-type-row">
-      <span class="vital-label">Телосложение:</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Дрищ</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Обычное</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Спортивное</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Качок</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Жиробас</span>
-      <span class="opt" data-group="bodytype" onclick="toggleOpt(this)">Рельефное</span>
-    </div>
+<div class="body-type-row">
+  <span class="vital-label">Телосложение:</span>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Дрищ</span>
+  </div>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Обычное</span>
+  </div>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Спортивное</span>
+  </div>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Качок</span>
+  </div>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Жировас</span>
+  </div>
+  <div class="opt-patch" data-group="bodytype" onclick="toggleOptPatch(this)">
+    <div class="opt-patch-arrow"><svg viewBox="0 0 30 20"><polygon points="0,0 23,0 30,10 23,20 0,20 7,10"/></svg></div>
+    <span>Рельефное</span>
+  </div>
+</div>
 
     <div class="contact-row">
       <span class="contact-label">Контактные данные:</span>
