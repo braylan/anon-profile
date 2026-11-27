@@ -1884,7 +1884,6 @@ document.querySelectorAll('.opt-patch.filled').forEach(el => {
   }
 }
 
-// ============ SAVE AS JPG ============
 async function saveAsJPG() {
   const btn = document.getElementById('save-jpg-btn');
   btn.disabled = true;
@@ -1896,69 +1895,154 @@ async function saveAsJPG() {
   try {
     const container = document.getElementById('anketa-container');
 
+    const hiddenForRender = [];
+
+    document.querySelectorAll('.perk-item:not(.filled), .perk-add-row').forEach(el => {
+      el.style.display = 'none';
+      hiddenForRender.push(el);
+    });
+
+    document.querySelectorAll('.achievement-item:not(.filled)').forEach(el => {
+      el.style.display = 'none';
+      hiddenForRender.push(el);
+    });
+    document.querySelectorAll('.achievement-col').forEach(col => {
+      if (col.querySelectorAll('.achievement-item.filled').length === 0) {
+        col.style.display = 'none';
+        hiddenForRender.push(col);
+      }
+    });
+
+    document.querySelectorAll('.taste-block').forEach(block => {
+      const ta = block.querySelector('.taste-textarea');
+      if (ta && !ta.value.trim()) {
+        block.style.display = 'none';
+        hiddenForRender.push(block);
+      }
+    });
+
+    document.querySelectorAll('.contact-input').forEach(inp => {
+      if (!inp.value.trim()) {
+        inp.style.display = 'none';
+        hiddenForRender.push(inp);
+        const prev = inp.previousElementSibling;
+        if (prev && prev.classList.contains('opt-patch') && !prev.classList.contains('filled')) {
+          prev.style.display = 'none';
+          hiddenForRender.push(prev);
+        }
+      }
+    });
+    document.querySelectorAll('.vital-row .contact-input').forEach(inp => {
+      if (!inp.value.trim()) {
+        inp.style.display = 'none';
+        hiddenForRender.push(inp);
+      }
+    });
+
+    document.querySelectorAll('#additional-container .add-text-field').forEach(row => {
+      const input = row.querySelector('input');
+      if (!input || !input.value.trim()) {
+        row.style.display = 'none';
+        hiddenForRender.push(row);
+      }
+    });
+    const addFieldBtn = document.getElementById('add-field-btn');
+    if (addFieldBtn) {
+      addFieldBtn.style.display = 'none';
+      hiddenForRender.push(addFieldBtn);
+    }
+
+    document.querySelectorAll('.canvas-controls, .template-btns, .save-bar').forEach(el => {
+      el.style.display = 'none';
+      hiddenForRender.push(el);
+    });
+
+
+    const patchGroups = ['gender', 'partner', 'orient', 'country', 'city', 'temp', 'bodytype'];
+    patchGroups.forEach(group => {
+      const patches = document.querySelectorAll(`.opt-patch[data-group="${group}"]`);
+      const filled = document.querySelector(`.opt-patch[data-group="${group}"].filled`);
+      
+      if (!filled) {
+
+        patches.forEach(el => {
+          el.style.display = 'none';
+          hiddenForRender.push(el);
+        });
+
+        const firstPatch = patches[0];
+        if (firstPatch) {
+          const block = firstPatch.closest('.vital-block') || firstPatch.closest('.vital-row');
+          if (block) {
+            const label = block.querySelector('.vital-label');
+            if (label) {
+              label.style.display = 'none';
+              hiddenForRender.push(label);
+            }
+          }
+        }
+      } else {
+      
+        patches.forEach(el => {
+          if (!el.classList.contains('filled')) {
+            el.style.display = 'none';
+            hiddenForRender.push(el);
+          }
+        });
+      }
+    });
+
+
+    const worldviewPatches = document.querySelectorAll('.opt-patch[data-align]');
+    const worldviewFilled = document.querySelector('.opt-patch[data-align].filled');
+    if (!worldviewFilled) {
+      worldviewPatches.forEach(el => {
+        el.style.display = 'none';
+        hiddenForRender.push(el);
+      });
+      document.querySelectorAll('.worldview-axis').forEach(el => {
+        el.style.display = 'none';
+        hiddenForRender.push(el);
+      });
+      const wvLabel = document.querySelector('.worldview-block .vital-label');
+      if (wvLabel) {
+        wvLabel.style.display = 'none';
+        hiddenForRender.push(wvLabel);
+      }
+    } else {
+      worldviewPatches.forEach(el => {
+        if (!el.classList.contains('filled')) {
+          el.style.display = 'none';
+          hiddenForRender.push(el);
+        }
+      });
+    }
 
     const replacements = [];
 
-  
     document.querySelectorAll('.taste-textarea').forEach(ta => {
-      const div = document.createElement('div');
-      div.className = 'taste-textarea-render';
-      div.style.cssText = `
-        width: 100%;
-        padding: 8px;
-        font-size: 12px;
-        font-family: inherit;
-        line-height: 1.5;
-        min-height: 60px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        color: #222;
-        background: #fff;
-      `;
-      div.textContent = ta.value || '';
-      ta.parentNode.replaceChild(div, ta);
-      replacements.push({ original: ta, replacement: div });
+      if (ta.value.trim()) {
+        const div = document.createElement('div');
+        div.style.cssText = `width:100%;padding:8px;font-size:12px;font-family:inherit;line-height:1.5;min-height:60px;white-space:pre-wrap;word-wrap:break-word;color:#222;background:#fff;`;
+        div.textContent = ta.value;
+        ta.parentNode.replaceChild(div, ta);
+        replacements.push({ original: ta, replacement: div });
+      }
     });
 
-   
     document.querySelectorAll('.contact-input, .auto-width-input').forEach(inp => {
-   
       if (inp.tagName !== 'INPUT') return;
-      const div = document.createElement('div');
-      div.className = 'input-render';
-      div.style.cssText = `
-        display: inline-block;
-        padding: 4px 8px;
-        font-size: 12px;
-        font-family: inherit;
-        color: #222;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        min-width: 80px;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        line-height: 1.4;
-      `;
-      div.textContent = inp.value || inp.placeholder || '';
-      inp.parentNode.replaceChild(div, inp);
-      replacements.push({ original: inp, replacement: div });
+      if (inp.value.trim()) {
+        const div = document.createElement('div');
+        div.style.cssText = `display:inline-block;padding:4px 8px;font-size:12px;font-family:inherit;color:#222;background:#fff;border:1px solid #ccc;border-radius:3px;min-width:80px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;line-height:1.4;`;
+        div.textContent = inp.value;
+        inp.parentNode.replaceChild(div, inp);
+        replacements.push({ original: inp, replacement: div });
+      }
     });
 
-
-    const hiddenElements = [];
-    document.querySelectorAll('.canvas-controls, .template-btns, .add-field-btn, .remove-field, .save-bar').forEach(el => {
-      el.style.display = 'none';
-      hiddenElements.push(el);
-    });
-
-   
     await new Promise(r => setTimeout(r, 100));
 
-  
     const canvas = await html2canvas(container, {
       scale: 2,
       backgroundColor: '#fafafa',
@@ -1968,13 +2052,11 @@ async function saveAsJPG() {
       windowHeight: container.scrollHeight
     });
 
-  
     replacements.forEach(({ original, replacement }) => {
       replacement.parentNode.replaceChild(original, replacement);
     });
-    hiddenElements.forEach(el => { el.style.display = ''; });
+    hiddenForRender.forEach(el => { el.style.display = ''; });
 
-   
     const jpgData = canvas.toDataURL('image/jpeg', 0.92);
     const link = document.createElement('a');
     link.download = 'anketa_anona_' + new Date().toISOString().slice(0,10) + '.jpg';
@@ -1985,15 +2067,12 @@ async function saveAsJPG() {
 
   } catch (err) {
     alert('❌ Ошибка при сохранении: ' + err.message);
-
-    document.querySelectorAll('.taste-textarea-render, .input-render').forEach(div => {
-   
-    });
   } finally {
     btn.disabled = false;
     btn.textContent = '📷 Сохранить как JPG';
   }
 }
+
 
 // ============ CLEAR ALL ============
 
